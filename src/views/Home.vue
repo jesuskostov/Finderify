@@ -2,15 +2,18 @@
   <div>
     <div class="city-name align-items-center" :class="{'d-none': show}">
       <h1 class="flex-grow-1">{{cityName}}</h1>
-      <button @click="show = true" class="showSearch">Show</button>
     </div>
+
     <div class="search-container" :class="{'show': show}">
       <div class="container py-4 d-flex flex-column justify-content-between align-items-center h-100">
         <div class="d-flex justify-content-end w-100">
-          <button @click="show = false" class="showSearch">Close</button>
+          <button @click="show = false" class="showSearch absolute">Close</button>
         </div>
         <div class="w-100">
-          <h2 class="mb-4">Find your place</h2>
+          <h2 class="mb-5">Find your place</h2>
+          <select class="w-100" v-model="choosenCity" @change="locator">
+            <option v-for="(city, i) in cities" :key="i" :value="`${city.lat},${city.lng},${city.city}`">{{city.city}}</option>
+          </select>
           <select class="w-100" v-model="choosenCity" @change="locator">
             <option value="none">Choose city</option>
             <option v-for="(city, i) in cities" :key="i" :value="`${city.lat},${city.lng},${city.city}`">{{city.city}}</option>
@@ -21,11 +24,14 @@
     </div>
     
     <div class="container custom-padding">
+      <p v-if="!hide" class="txt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio vero atque ducimus, adipisci quisquam id provident reiciendis corrupti, vitae ut deleniti tempore delectus voluptatem blanditiis. Debitis eveniet explicabo et quam.</p>
+      <img v-if="!hide" class="city-img" src="../city.png" alt="">
+      <button @click="show = true" class="choose-city" :class="{'absolute': hide}"><span v-if="cityName == ''">Choose your city</span> <span v-else>{{cityName}}</span></button>
       <div class="row">
         <div v-for="(object, i) in places" :key="i" class="col-12 col-md-4" :class="{'d-none': !object.photos}">
           <div v-for="(img, i) in object.photos" :key="i" class="box">
             <div class="working" :class="{'open': object.opening_hours}"><span v-if="object.opening_hours">Open</span><span v-else>Close</span></div>
-            <img :src="`https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference=${img.photo_reference}&key=AIzaSyB5QQ6LGOdx52-w-QKnYSpOrQaz2XKSyIE`" alt="">
+              <img :src="`https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference=${img.photo_reference}&key=AIzaSyB5QQ6LGOdx52-w-QKnYSpOrQaz2XKSyIE`" alt="">
             <div class="title">
               <h3>{{object.name}}</h3>
             </div>
@@ -45,11 +51,48 @@
 </template>
 
 <style lang="scss" scoped>
+.txt {
+  text-align: left;
+  font-size: 13px;
+}
+select {
+  height: 40px;
+  background-color: #fff;
+  margin-bottom: 20px;
+}
+.choose-city{
+  width: 100%;
+  height: 50px;
+  border: 0;
+  border-radius: 4px;
+  background-color: #0986de;
+  color: #fff;
+  margin-top: -5px;
+
+  &.absolute {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1030;
+  }
+}
+.city-img {
+  width: 100%;
+  margin-top: 15%;
+}
 .findBtn {
   width: 100%;
   border: 0;
   border-radius: 2px;
   height: 48px;
+  background-color: #fff;
+
+  &.absolute {
+    position: fixed;
+    bottom: 20px;
+  }
 }
 .custom-padding {
   padding-top: 30%;
@@ -62,7 +105,7 @@
   left: 0;
   right: 0;
   height: 50px;
-  background-color: #940a3d;
+  background-color: #0986de;
   z-index: 10;
 
   h1 {
@@ -72,15 +115,15 @@
   }
 }
 .showSearch {
-  width: 50px;
   height: 50px;
   border: 0;
   border-radius: 99999px;
-  background-color: #940a3d;
+  background-color: #0986de;
   color: #fff;
 
   &.absolute {
     position: absolute;
+    right: 0;
   }
 }
 .search-container {
@@ -89,15 +132,22 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #940a3d;
+  background-color: #0986de;
   opacity: 0;
   visibility: hidden;
   transition: 0.6s;
-  z-index: 1030;
+  z-index: 1036;
+  color: #fff;
 
   &.show {
     opacity: 1;
     visibility: visible;
+    transition: 0.6s;
+  }
+
+  &.hide {
+    opacity: 0;
+    visibility: hidden;
     transition: 0.6s;
   }
 }
@@ -201,14 +251,15 @@ export default {
   data() {
     return {
       show: false,
-      type: "bar",
+      hide: false,
+      type: "jewelry_store",
       radius: "10",
       lat: 0,
       lng: 0,
       places: [],
       cities: [],
       choosenCity: '',
-      cityName: ''
+      cityName: '',
     }
   },
   created() {
@@ -248,6 +299,7 @@ export default {
         console.log(err.message);
       })
       this.show = false
+      this.hide = true
     },
     locator() {
       let splitCordinates = this.choosenCity.split(',')
