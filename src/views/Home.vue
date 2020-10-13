@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-100">
     <div class="city-name align-items-center" :class="{'d-none': show}">
       <h1 class="flex-grow-1">{{cityName}} - {{typeName}}</h1>
     </div>
@@ -12,7 +12,7 @@
             <option v-for="(city, i) in cities" :key="i" :value="`${city.lat},${city.lng},${city.city}`">{{city.city}}</option>
           </select>
           <div class="row">
-            <div v-if="showBox" class="col-6 col-md-6">
+            <div v-if="showBox" class="col-6 col-md-6 col-lg-3 col-xl-2">
               <!-- Transport -->
               <div @click='turnOn(transport)' class="category-box" :class="{'disable': disable}">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 612 612" style="enable-background:new 0 0 612 612;" xml:space="preserve">
@@ -31,7 +31,7 @@
               </div>
             </div>
               <!-- Services -->
-            <div v-if="showBox" class="col-6 col-md-6">
+            <div v-if="showBox" class="col-6 col-md-6 col-lg-3 col-xl-2">
               <div @click="turnOn(service)" class="category-box" :class="{'disable': disable}">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512.014 512.014" style="enable-background:new 0 0 512.014 512.014;" xml:space="preserve">
                   <g>
@@ -100,7 +100,7 @@
               </div>
             </div>
               <!-- Entertainment -->
-            <div v-if="showBox" class="col-6 col-md-6">
+            <div v-if="showBox" class="col-6 col-md-6 col-lg-3 col-xl-2">
               <div @click="turnOn(entertainment)" class="category-box" :class="{'disable': disable}">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
                   <g>
@@ -127,7 +127,7 @@
               </div>
             </div>
               <!-- Care -->
-            <div v-if="showBox" class="col-6 col-md-6">
+            <div v-if="showBox" class="col-6 col-md-6 col-lg-3 col-xl-2">
               <div @click="turnOn(care)" class="category-box" :class="{'disable': disable}">
                 <svg enable-background="new 0 0 512 512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                     <g>
@@ -138,7 +138,7 @@
               </div>
             </div>
               <!-- Store -->
-            <div v-if="showBox" class="col-6 col-md-6">
+            <div v-if="showBox" class="col-6 col-md-6 col-lg-3 col-xl-2">
               <div @click="turnOn(store)" class="category-box" :class="{'disable': disable}">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512.005 512.005" style="enable-background:new 0 0 512.005 512.005;" xml:space="preserve">
                   <g>
@@ -161,7 +161,7 @@
               </div>
             </div>
               <!-- Other -->
-            <div v-if="showBox" class="col-6 col-md-6">
+            <div v-if="showBox" class="col-6 col-md-6 col-lg-3 col-xl-2">
               <div @click="turnOn(other)" class="category-box" :class="{'disable': disable}">
                 <svg enable-background="new 0 0 512.002 512.002" viewBox="0 0 512.002 512.002" xmlns="http://www.w3.org/2000/svg">
                   <g>
@@ -203,15 +203,15 @@
             <option value="none">Други</option>
           </select> -->
         </div>
-        <div class="w-100">
+        <div class="custom-mt w-100">
           <button v-if="showFindBtn" @click="getObjects" class="findBtn mb-3">Find places</button>
           <button v-if="backBtn" @click="goBack" class="findBtn">GO BACK</button>
         </div>
       </div>
     </div>
     
-    <div class="container custom-padding">
-      <p v-if="!hide" class="txt">Здравей, добре дошъл в моето нелепо приложение, което се опитавам да напарвя вече от не знам колко дни или седмици, по принцип тук ще трябва да изпиша някакъв умен текст, който да впечети потребителя (теб), но все още не съм го измисли.</p>
+    <div class="container custom-padding d-flex flex-column align-items-center justify-content-center">
+      <p v-if="!hide" class="txt">Здравей, добре дошъл в моето нелепо приложение, което се опитавам да напарвя вече от не знам колко дни или седмици, по принцип тук ще трябва да изпиша някакъв умен текст, който да впечети потребителят (теб), но все още не съм го измисли.</p>
       <img v-if="!hide" class="city-img" src="../city.png" alt="">
       <button @click="show = true" class="choose-city" :class="{'absolute': hide}"><span v-if="cityName == ''">Избери град</span> <span v-else>{{cityName}}</span></button>
       <div class="row">
@@ -238,7 +238,11 @@
 </template>
 
 <style lang="scss" scoped>
+.custom-mt {
+  padding-top: 10%;
+}
 .category-box {
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -268,18 +272,38 @@
     font-size: 14px;
     margin: -10px 0 10px 0;
   }
+
+  &:hover {
+    svg {
+      animation: rotate 1s infinite;
+    }
+  }
 }
+
 .txt {
   text-align: left;
-  font-size: 13px;
+  font-size: 16px;
 }
+
+@keyframes rotate {
+  0%{
+    transform: rotate(10deg);
+  }
+  50%{
+    transform: rotate(-5deg)
+    }
+  100%{
+    transform: rotate(10deg);
+  }
+}
+
 select {
   height: 40px;
   background-color: #fff;
   margin-bottom: 20px;
 }
 .choose-city{
-  width: 100%;
+  width: 60%;
   height: 50px;
   border: 0;
   border-radius: 4px;
@@ -298,8 +322,8 @@ select {
   }
 }
 .city-img {
-  width: 100%;
-  margin-top: 15%;
+  width: 50%;
+  margin-top: 5%;
 }
 .findBtn {
   width: 100%;
@@ -314,8 +338,8 @@ select {
   }
 }
 .custom-padding {
-  padding-top: 30%;
-  padding-bottom: 20%;
+  padding-top: 10%;
+  margin-bottom: 200px;
 }
 .city-name {
   position: fixed;
@@ -345,12 +369,16 @@ select {
     right: 0;
   }
 }
+  
 .search-container {
   position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  top: 50%;
+  left: 50%;
+  width: 60%;
+  min-height: 70%;
+  border-radius: 15px;
+  padding: 30px;
+  transform: translate(-50%, -50%);
   background-color: #0986de;
   opacity: 0;
   visibility: hidden;
@@ -458,6 +486,37 @@ select {
     background: rgb(4,4,4);
     background: linear-gradient(0deg, rgba(4,4,4,1) 0%, rgba(4,4,4,0) 100%);
     pointer-events: none;
+  }
+
+  
+}
+@media (max-width: 768px) {
+  .custom-mt {
+    margin: 0;
+  }
+  .custom-padding {
+    padding-top: 30%;
+    padding-bottom: 20%;
+  }
+  .city-img {
+    width: 100%;
+  }
+  .txt {
+    font-size: 13px;
+  }
+  .choose-city{
+    width: 100%;
+  }
+  .search-container {
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transform: translate(0, 0);
+    bottom: 0;
+    padding: 0;
+    border-radius: 0;
+    left: 0;
+    right: 0;
   }
 }
 </style>
