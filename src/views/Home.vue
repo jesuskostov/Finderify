@@ -19,39 +19,39 @@
     <!-- Container results -->
     <div class="container custom-padding d-flex flex-column align-items-center justify-content-center w-100">
       <div class="row w-100">
-        <div class="col-md-4">
-          <div class="box">
+        <div v-if="categoryShow" class="col-md-4">
+          <div class="box" @click="categoryShow = false, showTransport = true, info = transport">
               <img src="../assets/transport.jpg" alt="">
               <div class="title">
                 <h3>Транспорт</h3>
               </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="box">
+        <div v-if="categoryShow" class="col-md-4">
+          <div class="box" @click="categoryShow = false, showTransport = true, info = service">
               <img src="../assets/services.jpg" alt="">
               <div class="title">
                 <h3>Услуги</h3>
               </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="box">
+        <div v-if="categoryShow" class="col-md-4">
+          <div class="box" @click="categoryShow = false, showTransport = true, info = entertainment">
               <img src="../assets/еntertainments.jpg" alt="">
               <div class="title">
                 <h3>Развлечение</h3>
               </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="box">
+        <div v-if="categoryShow" class="col-md-4">
+          <div class="box" @click="categoryShow = false, showTransport = true, info = care">
               <img src="../assets/care.jpg" alt="">
               <div class="title">
                 <h3>Грижа</h3>
               </div>
           </div>
         </div>
-        <div class="col-md-4">
+        <div v-if="categoryShow" class="col-md-4">
           <div class="box">
               <img src="../assets/store.jpg" alt="">
               <div class="title">
@@ -59,7 +59,7 @@
               </div>
           </div>
         </div>
-        <div class="col-md-4">
+        <div v-if="categoryShow" class="col-md-4">
           <div class="box">
               <img src="../assets/others.jpg" alt="">
               <div class="title">
@@ -68,8 +68,8 @@
           </div>
         </div>
 
-        <transport @getSelected="category"/>
-        <button @click="getObjects">asd</button>
+        <transport v-if="showTransport" @getSelected="category" :info="info" />
+        <!-- <button @click="getObjects">asd</button> -->
       </div>
       <!-- Results -->
       <div class="row">
@@ -101,6 +101,7 @@
   bottom: 20px;
   right: 20px;
   height: 50px;
+  z-index: 1040;
   border: 0;
   width: 180px;
   border-radius: 0;
@@ -321,7 +322,7 @@ select {
   box-shadow: -5px 0px 12px 0px rgba(0,0,0,0.25);
   background-color: #fff;
   transition: 0.6s;
-  z-index: 1036;
+  z-index: 1050;
   color: #000;
   display: flex;
   transform: translate(100%, 0);
@@ -478,6 +479,9 @@ export default {
   },
   data() {
     return {
+      info: '',
+      categoryShow: true,
+      showTransport: false,
       selected: undefined,
       currentCity: '',
       showBox: false,
@@ -502,39 +506,6 @@ export default {
       cities: [],
       choosenCity: '',
       cityName: '',
-      services: [
-        {name: 'Банкомати', category: 'atm'},
-        {name: 'Банки', category: 'bank'},
-        {name: 'Пекарни', category: 'bakery'},
-        {name: 'Доктори', category: 'doctor'},
-        {name: 'Зъболекари', category: 'dentist'},
-        {name: 'Автокъщи', category: 'car_dealer'},
-        {name: 'Сервизи', category: 'car_repair'},
-        {name: 'Автомивки', category: 'car_wash'},
-        {name: 'Адвокати', category: 'lawyer'},
-        {name: 'Бояджии', category: 'painter'},
-        {name: 'Паркинги', category: 'parking'},
-        {name: 'Ветеринари', category: 'veterinary_care'},
-        {name: 'Бензиностанции', category: 'gas_station'},
-        {name: 'Аптеки', category: 'pharmacy'},
-        {name: 'Пощи', category: 'post_office'},
-      ],
-      еntertainments: [
-        {name: 'Барове', category: 'bar'},
-        {name: 'Кафета', category: 'cafe'},
-        {name: 'Казина', category: 'casino'},
-        {name: 'Нощни клубове', category: 'night_clubs'},
-        {name: 'Паркове', category: 'park'},
-        {name: 'Спа', category: 'spa'},
-        {name: 'Боулинг', category: 'bowling_alley'},
-        {name: 'Ресторанти', category: 'restaurant'},
-        {name: 'Молове', category: 'shopping_mall'},
-      ],
-      cares: [
-        {name: 'Фитнес', category: 'gym'},
-        {name: 'Салони за красота', category: 'beauty_salon'},
-        {name: 'Фризьорски салони', category: 'hair_care'},
-      ],
       // stores: ['clothing_store', 'shoe_store', 'store', 'supermarket', 'book_store', 'bicycle_store', 'pet_store'],
       // others: ['fire_station', 'hospital', 'police', 'church', 'museum', 'school', 'stadium', 'tourist_attraction', 'zoo', 'art_gallery', 'library']
     }
@@ -543,9 +514,9 @@ export default {
         // GET CURRENT CITY
       this.cities = city;
       navigator.geolocation.getCurrentPosition(position => {
+        console.log(123);
         this.lat = position.coords.latitude.toFixed(6)
         this.lng = position.coords.longitude.toFixed(6)
-
         axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.lat},${this.lng}&sensor=true&key=AIzaSyB5QQ6LGOdx52-w-QKnYSpOrQaz2XKSyIE`)
         .then( res => {
           let geometryLng = res.data.results[0].geometry.location.lat + '';
@@ -569,12 +540,7 @@ export default {
   methods: {
     category(value) {
       this.type = value
-    },
-    getObjects() {
-      // let typeAndName = this.getType.split(',')
-      // this.type = typeAndName[0]
-      // this.typeName = typeAndName[1]
-      
+
       setTimeout(() => {
         const URL = `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${
           this.lat
@@ -606,7 +572,7 @@ export default {
     },
     test(object) {
       window.open(`https://www.google.com/maps/place/?q=place_id:${object.place_id}`, "_blank");    
-    }
+    },
   }
 }
 </script>
