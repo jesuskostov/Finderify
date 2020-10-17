@@ -12,6 +12,7 @@
       </div>
     </div>
     <button @click="showNav" class="cityBtn">Избери град</button>
+    <button @click="showTransport = false, categoryShow = true, places = null" class="cityBtn category">Избери категория</button>
     <!-- Intro -->
     <div class="intro"></div>
     <h2 class="intro-title-city text-uppercase">{{cityName}}</h2>
@@ -69,10 +70,9 @@
         </div>
 
         <transport v-if="showTransport" @getSelected="category" :info="info" />
-        <!-- <button @click="getObjects">asd</button> -->
       </div>
       <!-- Results -->
-      <div class="row">
+      <div v-if="showTransport" class="row">
         <div v-for="(object, i) in places" :key="i" class="col-12 col-md-4" :class="{'d-none': !object.photos}">
           <div v-for="(img, i) in object.photos" :key="i" class="box" @click="test(object)">
             <div class="working" :class="{'open': object.opening_hours}"><span v-if="object.opening_hours">Open</span><span v-else>Close</span></div>
@@ -98,7 +98,7 @@
 <style lang="scss" scoped>
 .cityBtn {
   position: fixed;
-  bottom: 20px;
+  bottom: 80px;
   right: 20px;
   height: 50px;
   z-index: 1040;
@@ -111,6 +111,10 @@
   background: #9D50BB;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #6E48AA, #9D50BB);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #6E48AA, #9D50BB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  &.category {
+    bottom: 20px;
+  }
 }
 .intro {
   height: 300px;
@@ -482,6 +486,7 @@ export default {
       info: '',
       categoryShow: true,
       showTransport: false,
+      hideAll: false,
       selected: undefined,
       currentCity: '',
       showBox: false,
