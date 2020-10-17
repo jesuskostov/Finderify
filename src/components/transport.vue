@@ -31,7 +31,7 @@
 <script>
 export default {
     name: 'transport',
-    props: ['info'],
+    props: ['info', 'reset'],
     data() {
         return {
             choice: '',
