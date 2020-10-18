@@ -2,7 +2,7 @@
   <div class="h-100">
     <!-- Seachbox -->
   
-    </div>
+    
     <button @click="showNav" class="cityBtn">Избери град</button>
     <button @click="showTransport = false, categoryShow = true, places = null" class="cityBtn category">Избери категория</button>
     <!-- Intro -->
