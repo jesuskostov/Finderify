@@ -332,7 +332,7 @@ select {
   transform: translate(100%, 0);
 
   &.show {
-    width: 26%
+    display: none;
     transform: translate(0, 0);
     transition: 0.6s;
   }
