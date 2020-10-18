@@ -321,7 +321,7 @@ select {
   position: fixed;
   top: 0;
   right: 0;
-  width: 26%;
+  width: 0;
   bottom: 0;
   box-shadow: -5px 0px 12px 0px rgba(0,0,0,0.25);
   background-color: #fff;
@@ -332,6 +332,7 @@ select {
   transform: translate(100%, 0);
 
   &.show {
+    width: 26%
     transform: translate(0, 0);
     transition: 0.6s;
   }
