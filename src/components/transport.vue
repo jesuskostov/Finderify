@@ -1,13 +1,21 @@
 <template>
     <div class="w-100">
-        <h3 class="mt-3 mb-4">Транспорт</h3>
-        <div class="type-container">
+        <div class="my-4 type-container">
             <p v-for="(type, i) in data" :key="i" @click="getSelected(type.category)" class="types" :class="{active: choice == type.category}">{{type.name}}</p>
+        </div>
+        <div v-if="places == null" class="w-100 detective">
+            <img src="../assets/detective.png" alt="">
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
+.detective {
+    img {
+        width: 80%;
+        margin-top: 10%;
+    }
+}
 .type-container {
     width: 100%;
     text-align: center;
@@ -42,7 +50,7 @@
 <script>
 export default {
     name: 'transport',
-    props: ['info', 'reset'],
+    props: ['info', 'reset', 'places'],
     data() {
         return {
             choice: '',
