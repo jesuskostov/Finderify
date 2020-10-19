@@ -1,6 +1,6 @@
 <template>
     <div class="w-100">
-        <h3 class="mb-4">Транспорт</h3>
+        <h3 class="mt-3 mb-4">Транспорт</h3>
         <div class="type-container">
             <p v-for="(type, i) in data" :key="i" @click="getSelected(type.category)" class="types" :class="{active: choice == type.category}">{{type.name}}</p>
         </div>
@@ -24,6 +24,17 @@
         &.active {
             background-color: rgba(147, 39, 180, 1);
         }
+    }
+}
+@media (max-width: 768px) {
+    .type-container {
+      display: flex;
+      overflow-x: scroll;
+      padding: 0 15px;
+
+      .types {
+          flex-shrink: 0;
+      }
     }
 }
 </style>
