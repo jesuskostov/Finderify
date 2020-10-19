@@ -76,6 +76,7 @@
         <div v-for="(object, i) in places" :key="i" class="col-12 col-md-4" :class="{'d-none': !object.photos}">
           <div v-for="(img, i) in object.photos" :key="i" class="box" @click="test(object)">
             <div class="working" :class="{'open': object.opening_hours}"><span v-if="object.opening_hours">Open</span><span v-else>Close</span></div>
+              <span v-for="(km, i) in distance" :key="i">{{km}}</span>
               <img :src="`https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference=${img.photo_reference}&key=AIzaSyB5QQ6LGOdx52-w-QKnYSpOrQaz2XKSyIE`" alt="">
             <div class="title">
               <h3>{{object.name}}</h3>
@@ -511,6 +512,7 @@ export default {
       cities: [],
       choosenCity: '',
       cityName: '',
+      distance: [],
       // stores: ['clothing_store', 'shoe_store', 'store', 'supermarket', 'book_store', 'bicycle_store', 'pet_store'],
       // others: ['fire_station', 'hospital', 'police', 'church', 'museum', 'school', 'stadium', 'tourist_attraction', 'zoo', 'art_gallery', 'library']
     }
@@ -546,6 +548,7 @@ export default {
     category(value) {
       this.type = value
 
+      // Get results
       setTimeout(() => {
         const URL = `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${
           this.lat
@@ -559,6 +562,17 @@ export default {
         this.show = false
         this.hide = true
       }, 100)
+
+      // Distance calculate
+      setTimeout(() => {
+        this.places.map( id => {
+          const distance = `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${this.lat},${this.lng}&destinations=place_id:${id.place_id}&key=AIzaSyB5QQ6LGOdx52-w-QKnYSpOrQaz2XKSyIE`
+          axios.get(distance).then( res => {
+            console.log(res.data.rows[0].elements[0].distance.text);
+          })
+        })
+      }, 2000)
+      
 
     },
     locator(city, lat, lng) {
