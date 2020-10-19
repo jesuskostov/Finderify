@@ -1,5 +1,15 @@
 <template>
   <div class="h-100">
+    <div class="presentation d-flex align-items-center justify-content-center" :class="{'remove': intro}">
+      <div class="container text-left" :class="{'d-none': introContainer}">
+        <h2 class="mb-3">Здравей!</h2>
+        <h4 class="mb-4">Това е <span class="colored">Finderify</span></h4>
+        <p><span class="colored">Finderify</span> е уеб приложение създадено с много търпение и старание за да те улесни в намирането на всичко, което пожелаеш. Ако си в град, в който не си бил до сега <span class="colored">Finderify</span> ще бъде твоят герой.</p>
+        <p>Ще бъде нужно твоето разрешение, да използваме локацията ти, ако не си съгласен, приложението няма да бъде ефикасно за теб.</p>
+        <button @click="present" class="btn">Продължи</button>
+      </div>
+      <h2 v-if="introContainer" class="logo colored">Finderify</h2>
+    </div>
     <!-- Seachbox -->
     <div class="search-container" :class="{ show: show }">
       <div class="container px-0 d-flex flex-column align-items-center">
@@ -26,11 +36,15 @@
       </svg>
       </span>
       <span class="d-none d-md-block">Избери град</span></button>
-    <button
-      @click="(showTransport = false), (categoryShow = true), (places = null)"
-      class="cityBtn category"
-    >
-      Избери категория
+    <button v-if="showTransport" @click="(showTransport = false), (categoryShow = true), (places = null)" class="cityBtn category">
+      <span class="d-block d-md-none">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 459 459" style="enable-background:new 0 0 459 459;" xml:space="preserve">
+          <g>
+            <path d="M178.5,140.25v-102L0,216.75l178.5,178.5V290.7c127.5,0,216.75,40.8,280.5,130.05C433.5,293.25,357,165.75,178.5,140.25z"/>
+          </g>
+        </svg>
+      </span>
+      <span class="d-none d-md-block">Избери категория</span>
     </button>
     <!-- Intro -->
     <div class="intro"></div>
@@ -112,7 +126,7 @@
           </div>
         </div>
 
-        <transport v-if="showTransport" @getSelected="category" :info="info" />
+        <transport v-if="showTransport" @getSelected="category" :info="info" :places="places" />
       </div>
       <!-- Results -->
       <div v-if="showTransport" class="row">
@@ -164,6 +178,45 @@
 </template>
 
 <style lang="scss" scoped>
+.presentation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  z-index: 2000;
+
+  &.remove {
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.8s;
+    pointer-events: none;
+    z-index: -1321;
+  }
+
+}
+.logo {
+  font-size: 50px;
+  transform: scale(0);
+  animation: logo 1.8s forwards;
+  animation-delay: .9s;
+}
+
+@keyframes logo {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1.4);
+  }
+}
+
+.colored {
+  color: #9327b4;
+}
 .cityBtn {
   position: fixed;
   bottom: 80px;
@@ -607,16 +660,17 @@ select {
   }
   .cityBtn {
     right: 0;
-    bottom: 120px;
+    bottom: 50px;
     width: 20%;
     background: #9327b4;
     border-bottom-left-radius: 30px;
     background: rgba(147, 39, 180, 1);
 
     &.category {
-      right: 0;
+      left: 0;
       bottom: 50px;
-      width: 20%;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 30px;
       background: rgba(147, 39, 180, 1);
     }
   }
@@ -635,7 +689,10 @@ export default {
   },
   data() {
     return {
+      intro: false,
+      introContainer: false,
       animate: false,
+      loaded: false,
       info: "",
       categoryShow: true,
       showTransport: false,
@@ -660,7 +717,7 @@ export default {
       radius: "10",
       lat: 0,
       lng: 0,
-      places: [],
+      places: null,
       cities: [],
       choosenCity: "",
       cityName: "",
@@ -762,6 +819,12 @@ export default {
         "_blank"
       );
     },
+    present() {
+      this.introContainer = true
+      setTimeout(() => {
+        this.intro = true
+      }, 3100)
+    }
   },
 };
 </script>
