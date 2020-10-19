@@ -569,7 +569,7 @@ export default {
         this.places.map( id => {
           const distance = `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${this.lat},${this.lng}&destinations=place_id:${id.place_id}&key=AIzaSyB5QQ6LGOdx52-w-QKnYSpOrQaz2XKSyIE`
           axios.get(distance).then( res => {
-            this.distance = Object.values(res.data.rows[0].elements[0].distance.text)
+            this.distance = Object.entries(res.data.rows[0].elements[0].distance.text)
           })
         })
       }, 10000)
