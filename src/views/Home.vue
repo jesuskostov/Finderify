@@ -72,8 +72,8 @@
         <transport v-if="showTransport" @getSelected="category" :info="info" />
       </div>
       <!-- Results -->
-      <h2 v-for="(km, i) in distance" :key="i">test{{km}}</h2>
-      <!-- <h2>{{distance}}</h2> -->
+      <!-- <h2 v-for="(km, i) in distance" :key="i">test{{km}}</h2> -->
+      <h2>{{distance}}</h2>
       <div v-if="showTransport" class="row">
         <div v-for="(object, i) in places" :key="i" class="col-12 col-md-4" :class="{'d-none': !object.photos}">
           <div v-for="(img, i) in object.photos" :key="i" class="box" @click="test(object)">
@@ -514,6 +514,8 @@ export default {
       choosenCity: '',
       cityName: '',
       distance: [],
+      a: '',
+      b: ''
       // stores: ['clothing_store', 'shoe_store', 'store', 'supermarket', 'book_store', 'bicycle_store', 'pet_store'],
       // others: ['fire_station', 'hospital', 'police', 'church', 'museum', 'school', 'stadium', 'tourist_attraction', 'zoo', 'art_gallery', 'library']
     }
@@ -566,13 +568,18 @@ export default {
 
       // Distance calculate
       setTimeout(() => {
+        // const a = this.places.map( id => id.place_id)
         this.places.map( id => {
+          const PromiseArr = [];
           const distance = `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${this.lat},${this.lng}&destinations=place_id:${id.place_id}&key=AIzaSyB5QQ6LGOdx52-w-QKnYSpOrQaz2XKSyIE`
-          axios.get(distance).then( res => {
-            this.distance = Object.entries(res.data.rows[0].elements[0].distance.text)
-          })
+            PromiseArr.push(
+              axios.get(distance).then( res => new Promise( resolve => resolve(res.data.rows[0].elements[0].distance.text)))
+            )
+          Promise.all(PromiseArr).then(res => {
+            this.distance = res
+          });
         })
-      }, 10000)
+      }, 6000)
       
 
     },
