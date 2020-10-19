@@ -72,7 +72,8 @@
         <transport v-if="showTransport" @getSelected="category" :info="info" />
       </div>
       <!-- Results -->
-      <h2 v-for="(km, i) in distance" :key="i">test{{km}}</h2>
+      <!-- <h2 v-for="(km, i) in distance" :key="i">test{{km}}</h2> -->
+      <h2>{{distance}}</h2>
       <div v-if="showTransport" class="row">
         <div v-for="(object, i) in places" :key="i" class="col-12 col-md-4" :class="{'d-none': !object.photos}">
           <div v-for="(img, i) in object.photos" :key="i" class="box" @click="test(object)">
