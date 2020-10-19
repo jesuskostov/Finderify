@@ -1,8 +1,16 @@
 <template>
   <div class="h-100">
     <!-- Seachbox -->
-  
-    
+    <div class="search-container" :class="{'show': show}">
+      <div class="container px-0 d-flex flex-column align-items-center">
+          <div class="w-100 city-container flex-grow-1">
+            <div v-for="(city, i) in cities" :key="i" class="option" :class="{active: city.city == selected}"  @click="locator(city.city, city.lat, city.lng, selected = city.city)">
+              <p>{{city.city}}</p>
+            </div>
+          </div>
+        <button @click="show = false" class="btn">Продължи</button>
+      </div>
+    </div>
     <button @click="showNav" class="cityBtn">Избери град</button>
     <button @click="showTransport = false, categoryShow = true, places = null" class="cityBtn category">Избери категория</button>
     <!-- Intro -->
@@ -313,7 +321,7 @@ select {
   position: fixed;
   top: 0;
   right: 0;
-  width: 0;
+  width: 26%;
   bottom: 0;
   box-shadow: -5px 0px 12px 0px rgba(0,0,0,0.25);
   background-color: #fff;
@@ -324,7 +332,6 @@ select {
   transform: translate(100%, 0);
 
   &.show {
-    display: none;
     transform: translate(0, 0);
     transition: 0.6s;
   }
