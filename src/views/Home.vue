@@ -526,7 +526,7 @@ select {
     margin: 0;
   }
   .custom-padding {
-    margin: 60px 0px 90px 0;
+    margin: 60px 0px 50px 0;
   }
   .city-img {
     width: 100%;
