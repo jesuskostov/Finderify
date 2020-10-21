@@ -48,7 +48,7 @@
     </button>
     <!-- Intro -->
     <div class="intro"></div>
-    <h2 class="intro-title-city text-uppercase">{{ cityName }}</h2>
+    <h2 class="intro-title-city text-uppercase"><img v-if="!cityName" class="loading-gif" src="../assets/loading.gif" alt="">{{ cityName }}</h2>
 
     <!-- Container results -->
     <div
@@ -179,6 +179,9 @@
 </template>
 
 <style lang="scss" scoped>
+.loading-gif {
+  width: 50%;
+}
 /* Enter and leave animations can use different */
 /* durations and timing functions.              */
 .slide-fade-enter-active {
@@ -664,7 +667,6 @@ select {
     margin-bottom: 0;
 
     &.mobile {
-      height: 130px;
       margin-bottom: 0;
       border-radius: 0;
     }
@@ -742,6 +744,17 @@ export default {
   },
   created() {
     // GET CURRENT CITY
+
+    let boxHeight = (window.innerHeight - 64) / 6
+    console.log(boxHeight);
+    setTimeout(() => {
+      let boxes = document.getElementsByClassName('mobile')
+      for (let item of boxes) {
+        item.style.height = boxHeight + 'px'
+      }
+    }, 10)
+
+
     this.cities = city;
     navigator.geolocation.getCurrentPosition(
       (position) => {
