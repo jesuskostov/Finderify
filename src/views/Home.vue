@@ -36,7 +36,7 @@
       </svg>
       </span>
       <span class="d-none d-md-block">Избери град</span></button>
-    <button v-if="showTransport" @click="(showTransport = false), (categoryShow = true), (places = null)" class="cityBtn category">
+    <button v-if="showTransport" @click="backBtnFunction" class="cityBtn category">
       <span class="d-block d-md-none">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 459 459" style="enable-background:new 0 0 459 459;" xml:space="preserve">
           <g>
@@ -746,7 +746,6 @@ export default {
     // GET CURRENT CITY
 
     let boxHeight = (window.innerHeight - 64) / 6
-    console.log(boxHeight);
     setTimeout(() => {
       let boxes = document.getElementsByClassName('mobile')
       for (let item of boxes) {
@@ -851,7 +850,24 @@ export default {
       setTimeout(() => {
         this.intro = true
       }, 3100)
+    },
+    backBtnFunction() {
+      this.showTransport = false
+      this.categoryShow = true 
+      this.places = null
+
+      let boxHeight = (window.innerHeight - 64) / 6
+      setTimeout(() => {
+        let boxes = document.getElementsByClassName('mobile')
+        for (let item of boxes) {
+          item.style.height = boxHeight + 'px'
+        }
+      }, 10)
+
     }
   },
+  mounted() {
+    console.log('pak');
+  }
 };
 </script>
