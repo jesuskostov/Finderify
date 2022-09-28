@@ -2,7 +2,7 @@
   <div class="h-100">
     <div class="presentation d-flex align-items-center justify-content-center" :class="{'remove': intro}">
       <div class="container text-left" :class="{'d-none': introContainer}">
-        <h2 class="mb-3">Здравей!</h2>
+        <h2 class="mb-3">Здравей, Здравей!</h2>
         <h4 class="mb-4">Това е <span class="colored">Finderify</span></h4>
         <p><span class="colored">Finderify</span> е уеб приложение създадено с много търпение и старание за да те улесни в намирането на всичко, което пожелаеш. Ако си в град, в който не си бил до сега <span class="colored">Finderify</span> ще бъде твоят герой.</p>
         <p>Ще бъде нужно твоето разрешение, да използваме локацията ти, ако не си съгласен, приложението няма да бъде ефикасно за теб.</p>
